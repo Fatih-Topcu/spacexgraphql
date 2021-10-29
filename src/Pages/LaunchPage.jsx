@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import LeftLogo from "../media/LeftArrow.png";
 import "../styles/styles.css";
 import Gallery from "react-grid-gallery";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const LaunchPage = (props) => {
   let id = props.match.params.id;
@@ -35,7 +37,18 @@ const LaunchPage = (props) => {
 
   const { data, loading, error } = useQuery(LAUNCH);
 
-  if (loading) return "Loading..";
+  if (loading || data == null)
+    return (
+      <div style={{ textAlign: "center" }}>
+        <Loader
+          type="TailSpin"
+          color="#00BFFF"
+          height={100}
+          width={100}
+          timeout={3000}
+        />
+      </div>
+    );
   if (error) return <pre>Error</pre>;
 
   const launchData = data.launch;
@@ -71,7 +84,7 @@ const LaunchPage = (props) => {
       <div style={{ fontWeight: "bold" }}>LAUNCH DETAILS</div>
       <div style={{ marginBottom: "1rem" }}>{launchData.details}</div>
       <div style={{ fontWeight: "bold", marginBottom: "1rem" }}>
-        Rocket : {launchData.rocket.rocket_name} - Launch Site :{" "}
+        Rocket : {launchData.rocket.rocket_name} / Launch Site :{" "}
         {launchData.launch_site.site_name}{" "}
       </div>
       <Gallery images={images} />

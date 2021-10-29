@@ -20,3 +20,20 @@
   text-align: center;
   margin-bottom: 1rem;
 }
+
+.back-button {
+  max-width: 3rem;
+}
+
+.mission-name {
+  margin-left: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color:cornflowerblue;
+  font-family: Roboto, "Helvetica Neue";
+}
+
+.mission-date {
+  font-size: 1rem;
+  font-family: Roboto, "Helvetica Neue";
+}

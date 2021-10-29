@@ -10,6 +10,10 @@ import Loader from "react-loader-spinner";
 const LaunchPage = (props) => {
   let id = props.match.params.id;
 
+  if (isNaN(id)) {
+    props.history.push(`/404`);
+  }
+
   const LAUNCH = gql`
     {
       launch(id: ${id}) {
@@ -45,11 +49,14 @@ const LaunchPage = (props) => {
           color="#00BFFF"
           height={100}
           width={100}
-          timeout={3000}
+          timeout={2000}
         />
       </div>
     );
-  if (error) return <pre>Error</pre>;
+
+  if (error) {
+    return <pre>Error</pre>;
+  }
 
   const launchData = data.launch;
 
@@ -59,35 +66,41 @@ const LaunchPage = (props) => {
 
   let images = [];
 
-  launchData.links.flickr_images.forEach((el) => {
-    images.push({
-      src: el,
-      thumbnail: el,
+  if (launchData != null) {
+    launchData.links.flickr_images.forEach((el) => {
+      images.push({
+        src: el,
+        thumbnail: el,
+      });
     });
-  });
+  }
 
   return (
     <>
-      <div>
-        <Link to="/">
-          <img className="back-button" src={LeftLogo} alt="Go Back" />
-        </Link>
-        <span className="mission-name">{launchData.mission_name}</span>
-      </div>
-      <br />
-      <div className="mission-date">Date: {launchData.launch_date_utc}</div>
-      <br />
-      <a href={launchData.links.video_link}>Watch Here</a> -{" "}
-      <a href={launchData.links.wikipedia}>Wikipedia Link</a>
-      <br />
-      <br />
-      <div style={{ fontWeight: "bold" }}>LAUNCH DETAILS</div>
-      <div style={{ marginBottom: "1rem" }}>{launchData.details}</div>
-      <div style={{ fontWeight: "bold", marginBottom: "1rem" }}>
-        Rocket : {launchData.rocket.rocket_name} / Launch Site :{" "}
-        {launchData.launch_site.site_name}{" "}
-      </div>
-      <Gallery images={images} />
+      {launchData ? (
+        <>
+          <div>
+            <Link to="/">
+              <img className="back-button" src={LeftLogo} alt="Go Back" />
+            </Link>
+            <span className="mission-name">{launchData.mission_name}</span>
+          </div>
+          <br />
+          <div className="mission-date">Date: {launchData.launch_date_utc}</div>
+          <br />
+          <a href={launchData.links.video_link}>Watch Here</a> -{" "}
+          <a href={launchData.links.wikipedia}>Wikipedia Link</a>
+          <br />
+          <br />
+          <div style={{ fontWeight: "bold" }}>LAUNCH DETAILS</div>
+          <div style={{ marginBottom: "1rem" }}>{launchData.details}</div>
+          <div style={{ fontWeight: "bold", marginBottom: "1rem" }}>
+            Rocket : {launchData.rocket.rocket_name} / Launch Site :{" "}
+            {launchData.launch_site.site_name}{" "}
+          </div>
+          <Gallery images={images} />
+        </>
+      ) : null}
     </>
   );
 };

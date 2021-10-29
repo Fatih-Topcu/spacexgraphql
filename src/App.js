@@ -4,8 +4,6 @@ import LaunchPage from "./Pages/LaunchPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
-
-  
   return (
     <div style={{ margin: "3rem 5rem 3rem 5rem" }}>
       <HashRouter>

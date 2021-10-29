@@ -3,6 +3,8 @@ import Gallery from "react-grid-gallery";
 import "../styles/styles.css";
 import { useQuery, gql } from "@apollo/client";
 import { withRouter } from "react-router-dom";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const LAUNCHES = gql`
   {
@@ -32,7 +34,18 @@ const LAUNCHES = gql`
 const HomePage = (props) => {
   const { data, loading, error } = useQuery(LAUNCHES);
 
-  if (loading) return "Loading..";
+  if (loading || data == null)
+    return (
+      <div style={{ textAlign: "center" }}>
+        <Loader
+          type="TailSpin"
+          color="#00BFFF"
+          height={100}
+          width={100}
+          timeout={3000}
+        />
+      </div>
+    );
   if (error) return <pre>Error</pre>;
 
   let imageData = [];
@@ -49,7 +62,7 @@ const HomePage = (props) => {
 
   return (
     <>
-      <div className="home-header page-header"> SPACEX LAUNCHES</div>
+      <div className="home-header page-header">SPACEX LAUNCHES</div>
 
       <Gallery
         images={imageData}
